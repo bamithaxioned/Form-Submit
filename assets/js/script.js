@@ -11,7 +11,7 @@ const submitBtn = document.getElementById("Submit");
 const cancelBtn = document.getElementById("cancel");
 
 let genderData = document.querySelector("input[name='gender']:checked");
-let genderArray = document.querySelectorAll("input[name='gender']")
+let genderArray = document.querySelectorAll("input[name='gender']");
 let femaleCheckbox = document.getElementById("female");
 
 // Grabbing Details
@@ -107,7 +107,7 @@ lastNameData.addEventListener("blur", (e) => {
         let errorMessage = "Last Name should be between 3 to 15 character and should not start with Number."
         span.textContent = errorMessage;
         span.style.display = "block";
-        inputBox.appendChild(span);
+        // inputBox.appendChild(span);
         validLastName = false;
     }
 })
@@ -242,8 +242,9 @@ function display() {
     // Adding Ul to the HTML
     displayContainer.appendChild(ul);
 
-    // adding click event to element
+    // adding click event to Delete button and edit Button
     deleteli.addEventListener("click", deleteSelectedRow);
+    editli.addEventListener("click",editSelectedRow)
 }
 
 // Function To remove the click sign from radio Button of Gender 
@@ -285,8 +286,6 @@ cancelBtn.addEventListener("click", (e) => {
     // to remove the checkbox sign of terms and conditions
     removeCheckboxSign();
 })
-
-// Functioning Delete Button
 
 // Submitting 
 form.addEventListener("submit", (e) => {
@@ -371,6 +370,7 @@ form.addEventListener("submit", (e) => {
         // validTerms = false;
         // validGender = false;
     }
+    // console.log(myArr);
 })
 
 // Delete Row
@@ -378,19 +378,76 @@ function deleteSelectedRow(){
 // grabing all Ul
 let displayBox = displayContainer.children;
 
-let emptyArr = [];
-for(let i=0; i<displayBox.length; i++){
-    emptyArr.push(displayBox[i]);
-}
-for (var i = 0; i < displayBox.length; i++) {
-    displayBox[i].onclick = function () {
-      var index = emptyArr.indexOf(this);
-      if(index > 0){
-        myArr.splice(index, 1);
-        // console.log(index);
-        var ulRemove = document.querySelector(".display");
-        ulRemove.removeChild(ulRemove.children[index]);
-      }
+  // Creating an array to add all Ul in it
+  let emptyArr = [];
+    //iterating ul and adding it inside array
+    for(let i=0; i<displayBox.length; i++){
+        emptyArr.push(displayBox[i]);
+    }
+    // iterating ul and grabbing index of the the ul and splicing it 
+    for (var i = 0; i < displayBox.length; i++) {
+        displayBox[i].onclick = function () {
+            // grabbing index of displayBox[i]
+        var index = emptyArr.indexOf(this);
+        console.log(index);
+            if(index > 0){
+                myArr.splice(index, 1);;
+                var ulRemove = document.querySelector(".display");
+                console.log(ulRemove.children[index]);
+                ulRemove.removeChild(ulRemove.children[index]);
+            }
+        }
     }
 }
+
+// Function the Edit Button of li
+function editSelectedRow(){
+
+    let displayBox = displayContainer.children; 
+    let editArray = [];
+
+    for(let i=0;i<displayBox.length; i++){
+        editArray.push(displayBox[i]);
+    }
+    console.log(editArray);
+    for(let i=0; i<displayBox.length; i++){
+        displayBox[i].onclick =function(){
+             let index = editArray.indexOf(this);
+             console.log(index);
+             if(index > 0){
+                // array to store the values of a single ul
+                let ulArray = [];
+                // iterating ul
+                for(key in myArr[index - 1]){
+                    ulArray.push(myArr[index - 1][key]);
+                }
+
+                let firstName = document.querySelector("#firstName");
+                let lastName = document.querySelector("#lastName");
+                let genderArr = document.querySelectorAll("input[name='gender']")
+                let address = document.querySelector("#address");
+                
+                // Adding values in inputs
+                firstName.value = ulArray[0];
+                lastName.value = ulArray[1];
+                // gender
+                if(ulArray[2] === "Male"){
+                    genderArr[0].checked = true;
+                    // document.querySelector("#male").checked = true;
+                }else{
+                    genderArr[1].checked = true;
+                    // document.querySelector("#female").checked = true;
+                }
+                address.value = ulArray[3];
+
+                console.log(myArr); 
+                // removing from main array
+                myArr.splice(index -1, 1);
+                console.log(myArr);
+                let editUl = document.querySelector(".display");
+                editUl.removeChild(editUl.children[index]);
+
+             }
+        }
+    }
 }
