@@ -10,14 +10,18 @@ const displayContainer = document.querySelector(".display");
 const submitBtn = document.getElementById("Submit");
 const cancelBtn = document.getElementById("cancel");
 
+let genderData = document.querySelector("input[name='gender']:checked");
+let genderArray = document.querySelectorAll("input[name='gender']")
+let femaleCheckbox = document.getElementById("female");
+
 // Grabbing Details
 let firstNameData = document.getElementById("firstName");
 let lastNameData = document.getElementById("lastName");
 let addressData = document.getElementById("address");
 let termsData = document.querySelector("#terms");
 
-// Validating firstname,lastname and  gender
-let validFirstName = false, validLastName = false, validAddress = false;
+// Validating firstname,lastname , address , terms & condition and  gender
+let validFirstName = false, validLastName = false, validAddress = false, validGender = false, validTerms= false;
 
 // FirstName Verfication
 firstNameData.addEventListener("blur", (e) => {
@@ -108,19 +112,6 @@ lastNameData.addEventListener("blur", (e) => {
     }
 })
 
-// Gender Verification
-let genderData = document.querySelector("input[name='gender']:checked");
-let femaleCheckbox = document.getElementById("female");
-// genderData.addEventListener("click",(e)=>{
-//     let genderNewData = document.querySelector("input[name='gender']");
-//     if(genderNewData[0].checked){
-//         console.log("Male is checked")
-//     }
-//     else if(genderNewData[1].checked){
-//         console.log("Female is checked")
-//     }
-// })
-
 // Address Validation
 addressData.addEventListener("blur", () => {
     let regex = /^[a-zA-z]([0-9a-zA-z\s\,\:\.]){2,149}$/
@@ -162,16 +153,21 @@ addressData.addEventListener("blur", () => {
         inputBox.appendChild(span);
         validAddress = false;
     }
-
 })
 
-
-// Terms and Condition Validation
-if(!(termsData)){
-    let span = termsData.parentElement;
-    console.log(span);
+// Function for validating Gender
+function genderValidate(){
+    let genderSpan = femaleCheckbox.nextElementSibling.nextElementSibling;
+    if(genderArray[0].checked == true || genderArray[1].checked == true){
+        validGender = true;
+        genderSpan.style.display = "none";
+    }else{
+        validGender = false;
+        genderSpan.style.display = "block";
+        genderSpan.classList.add("red-text");
+        genderSpan.textContent = "Please Select your Gender"; 
+    }
 }
-
 
 // Function for Changing Border color After Submmitting
 function borderColor() {
@@ -181,6 +177,8 @@ function borderColor() {
     lastNameData.classList.add("border");
     addressData.classList.remove("green-border");
     addressData.classList.add("border");
+    // let span = femaleCheckbox.nextElementSibling.nextElementSibling;
+    // span.style.display = "none";
 }
 //Function to  Reset The Form
 function formReset() {
@@ -193,7 +191,6 @@ function formReset() {
 function data() {
     // var genderValue = null;
     let genderData = document.querySelector('input[name = "gender"]:checked');
-    console.log(genderData);
     if (genderData) {
         var genderValue = genderData.value;
     }
@@ -220,9 +217,9 @@ function display() {
         let li = document.createElement("li");
         li.textContent = myArr[myArr.length - 1][key];
         ul.appendChild(li);
-        console.log(li)
+        // console.log(li);
     }
-    console.log(myArr);
+    // console.log(myArr);
 
     // Creating Edit Li
     let editli = document.createElement("li");
@@ -249,29 +246,29 @@ function display() {
     deleteli.addEventListener("click", deleteSelectedRow);
 }
 
-//Functioning Submit Button 
-// submitBtn.addEventListener("click",(e)=>{
-//     e.preventDefault();
-//     // console.log(validFirstName, validLastName, validAddress);
-//     if(validFirstName && validLastName && validAddress){
-//         data();
-//         display();
-//         validLastName = false;
-//         validFirstName=false;
-//         validAddress=false;
-//     }    
-//     else{
-//     }
-// })
+// Function To remove the click sign from radio Button of Gender 
+function removeRadioSign(){
+    if(genderArray[0].checked == true || genderArray[1].checked == true){
+        genderArray[0].checked = false;
+        genderArray[1].checked = false;
+    }
+}
+
+// Function to remove the checkbox sign of terms and conditions
+function removeCheckboxSign(){
+    if(terms.checked == true){
+        terms.click();
+    }
+}
 
 // Functioning Cancel Button
 cancelBtn.addEventListener("click", (e) => {
     e.preventDefault();
     let span = femaleCheckbox.nextElementSibling.nextElementSibling;
+    let termsErrorMessage = termsData.nextElementSibling.lastElementChild;
 
     formReset();
     borderColor();
-
    
     firstNameData.classList.remove("red-border");
     firstNameData.nextElementSibling.style.display = "none";
@@ -280,9 +277,14 @@ cancelBtn.addEventListener("click", (e) => {
     addressData.classList.remove("red-border");
     addressData.nextElementSibling.style.display = "none";
     span.style.display = "none"
+    termsErrorMessage.style.display = "none";
 
+    // To remove the click sign from radio Button of Gender 
+    removeRadioSign();
+
+    // to remove the checkbox sign of terms and conditions
+    removeCheckboxSign();
 })
-
 
 // Functioning Delete Button
 
@@ -333,30 +335,46 @@ form.addEventListener("submit", (e) => {
         inputBox.appendChild(span);
         validAddress = false;
     }
-    if (validFirstName && validLastName && validAddress) {
+
+    // Validation for Gender
+    genderValidate();
+
+    // Validation terms and condition checkbox
+     if(termsData.checked == true){
+        let termsErrorMessage = termsData.nextElementSibling.lastElementChild;
+        validTerms = true;
+        // console.log(validTerms);
+        termsErrorMessage.style.display = "none";
+    }  
+    else{
+        validTerms = false;
+        // console.log(validTerms);
+        let termsErrorMessage = termsData.nextElementSibling.lastElementChild;
+        // console.log(termsErrorMessage);
+        termsErrorMessage.style.display = "block";
+        termsErrorMessage.classList.add("red-text")
+        termsErrorMessage.textContent = "Please Accept the Terms and Condition" ;
+    }
+
+    // 
+    if (validFirstName && validLastName && validAddress && validGender && validTerms) {
         data();
         display();
+        // To remove the click sign from radio Button of Gender 
+        removeRadioSign();
+
+        // to remove the checkbox sign of terms and conditions
+        removeCheckboxSign();
         validLastName = false;
         validFirstName = false;
         validAddress = false;
-    }
-
-    if(!(genderData)){
-        let span = femaleCheckbox.nextElementSibling.nextElementSibling;
-        span.style.display = "block";
-        span.className = "red-text"
-        span.textContent = "Please check atleast One button"
-    }else if(genderData){
-        let span = femaleCheckbox.nextElementSibling.nextElementSibling;
-        span.style.display = "none";
-        console.log("Not chec")
+        // validTerms = false;
+        // validGender = false;
     }
 })
 
-
 // Delete Row
 function deleteSelectedRow(){
-
 // grabing all Ul
 let displayBox = displayContainer.children;
 
@@ -369,7 +387,7 @@ for (var i = 0; i < displayBox.length; i++) {
       var index = emptyArr.indexOf(this);
       if(index > 0){
         myArr.splice(index, 1);
-        console.log(index)
+        // console.log(index);
         var ulRemove = document.querySelector(".display");
         ulRemove.removeChild(ulRemove.children[index]);
       }
