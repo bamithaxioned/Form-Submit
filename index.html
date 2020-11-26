@@ -4,7 +4,6 @@
 <html lang="en">
 
 <head>
-
   <meta charset="utf-8">
 
   <title>Form Submission</title>
@@ -14,13 +13,12 @@
 
   <!--font-awesome link for icons-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
   <!-- Default style-sheet is for 'media' type screen (color computer display).  -->
   <link rel="stylesheet" media="screen" href="assets/css/style.css">
-
   <link
     href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
     rel="stylesheet">
+
 </head>
 
 <body>
@@ -30,7 +28,7 @@
     <header>
 
     </header>
-    <!--header section end-->
+    <!--header section start-->
     <!--main section start-->
     <main>
       <!--Form section start-->
@@ -40,15 +38,13 @@
             <div class="form-group">
               <label for="firstName" class="labelName">First Name:</label>
               <div class="input-box">
-                <input type="text" name="firstname" id="firstName" class="border">
-                <span class="error">Error</span>
+                <input type="text" name="firstname" id="firstName" class="firstName border">
               </div>
             </div>
             <div class="form-group">
               <label for="lastName" class="labelName">Last Name:</label>
               <div class="input-box">
-                <input type="text" name="lastname" id="lastName" class="border">
-                <span>Error</span>
+                <input type="text" name="lastname" id="lastName" class="lastName border">
               </div>
             </div>
             <div class="form-group">
@@ -58,21 +54,18 @@
                 <label for="male">Male</label>
                 <input type="radio" name="gender" id="female" value="Female">
                 <label for="female">Female</label>
-                <span>Error</span>
               </div>
             </div>
             <div class="form-group">
               <label for="address" class="labelName">Address:</label>
               <div class="input-box">
-                <textarea name="address" id="address" class="border"></textarea>
-                <span>Error</span>
+                <textarea name="address" id="address" class="address border"></textarea>
               </div>
             </div>
             <div class="form-group align-left">
               <input type="checkbox" name="terms" id="terms">
               <div class="input-box">
                 <label for="terms">Terms and Condition</label>
-                <span>Error</span>
               </div>
             </div>
             <div class="buttons">
@@ -107,7 +100,7 @@
   </div>
   <!--container end-->
 
-  <script src="assets/js/script.js"></script>
+<script src="assets/js/script.js"></script> 
 </body>
 
 </html>
